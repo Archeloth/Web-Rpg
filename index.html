@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <script defer src="script.js"></script>
+    <title>Javascript RPG Game</title>
+</head>
+<body>
+    <h1>Welcome to the JavaScript RPG Game!</h1>
+    <div class="wrapper">
+        <section class="character">
+            <h4>Create your character</h4>
+
+            <label for="name">Name</label>
+            <input type="text" id="name">
+
+            <p>Class</p>
+            <select id="class">
+                <option value="fighter">Fighter</option>
+                <option value="rouge">Rouge</option>
+                <option value="mage">Mage</option>
+            </select>
+
+            <p>Points to spend</p>
+            <p>0</p>
+
+            <div class="attribute">
+                <label for="strength">Strength</label>
+                <input type="number" id="strength" min="0">
+            </div>
+            
+
+            <div class="attribute">
+                <label for="agility">Agility</label>
+                <input type="number" id="agility" min="0">
+            </div>
+           
+
+            <div class="attribute">
+                <label for="inteligence">Intelligence</label>
+                <input type="number" id="intelligence" min="0">
+            </div>
+           
+            <button id="createBtn">Create Character</button>
+
+        </section>
+        <section class="game">
+            <p>Fill in the character form first</p>
+        </section>
+    </div>
+    
+</body>
+</html>

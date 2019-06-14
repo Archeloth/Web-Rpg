@@ -1,0 +1,83 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+}
+h1{
+    text-align: right;
+    padding-right: 5vw;
+    border-bottom: solid black 5px;
+}
+.wrapper{
+    margin-top: 5vh;
+    height: 85vh;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.wrapper .character{
+    width: 15vw;
+    height: 90%;
+    background-color: rgb(131, 72, 72);
+    margin-left: 5vw;
+    text-align: center;
+}
+.wrapper .character select{
+    width: 100%;
+}
+.wrapper .character .attribute{
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+}
+.wrapper .character .attribute input[type="number"]{
+    width: 40%;
+}
+#createBtn{
+    width: 100%;
+    height: 2rem;
+    font-weight: bolder;
+    border: none;
+    background-color: rgb(204, 111, 111);
+}
+#createBtn:hover{
+    transition: background-color 0.2s;
+    background-color: rgb(255, 144, 144);
+}
+
+.wrapper .game{
+    width: 70vw;
+    height: 90%;
+    background-color: rgba(71, 155, 134, 0.5);
+    margin-right: 5vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wrapper .game:hover{
+    transition: background-color 0.5s;
+    background-color: rgba(71, 155, 134, 1);
+}
+.wrapper .game p{
+    color: white;
+}
+
+@media screen and (max-width: 680px) {
+    .wrapper{
+        margin-top: 0;
+        flex-direction: column;
+    }
+    .wrapper .character{
+        margin-left: 0;
+        width: 100%;
+    }
+    .wrapper .game{
+        margin-top: 5vh;
+        margin-right: 0;
+        width: 100%;
+    }
+}
