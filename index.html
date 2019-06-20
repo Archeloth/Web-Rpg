@@ -20,35 +20,35 @@
             <p>Class</p>
             <select id="class">
                 <option value="fighter">Fighter</option>
-                <option value="rouge">Rouge</option>
+                <option value="rogue">Rogue</option>
                 <option value="mage">Mage</option>
             </select>
 
             <p>Points to spend</p>
-            <p>0</p>
+            <p id="points"></p>
 
             <div class="attribute">
                 <label for="strength">Strength</label>
-                <input type="number" id="strength" min="0">
+                <input type="range" id="strength" min="0" max="10" value="0" onchange="ChangePoints(this.value, 'strength')">
             </div>
             
 
             <div class="attribute">
                 <label for="agility">Agility</label>
-                <input type="number" id="agility" min="0">
+                <input type="range" id="agility" min="0" max="10" value="0" onchange="ChangePoints(this.value, 'agility')">
             </div>
            
 
             <div class="attribute">
-                <label for="inteligence">Intelligence</label>
-                <input type="number" id="intelligence" min="0">
+                <label for="intelligence">Intelligence</label>
+                <input type="range" id="intelligence" min="0" max="10" value="0" onchange="ChangePoints(this.value, 'intelligence')">
             </div>
            
-            <button id="createBtn">Create Character</button>
+            <button id="createBtn" onclick="CheckCharacter()">Create Character</button>
 
         </section>
-        <section class="game">
-            <p>Fill in the character form first</p>
+        <section class="game disabled" id="game">
+            <p id="disabled">Fill in the character form first</p>
         </section>
     </div>
     
