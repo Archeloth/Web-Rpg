@@ -92,31 +92,90 @@ h1{
     border: none;
     background-color: rgb(204, 111, 111);
     border-radius: 10px;
+    transition: background-color 0.2s;
+    outline: none;
 }
 #createBtn:hover{
-    transition: background-color 0.2s;
     background-color: rgb(255, 144, 144);
 }
 
 .wrapper .game{
+    background-color: rgb(131, 131, 131);
     width: 70vw;
     height: 90%;
-    background-color: rgba(71, 155, 134, 1);
     margin-right: 5vw;
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(10,calc(100% / 10));
+    grid-template-rows: repeat(10,calc(100% / 10) );
+}
+
+.overlay{
+    position: absolute;
     display: flex;
     justify-content: center;
     align-items: center;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7 );
+    opacity: 1;
+    transition: opacity 3s;
+    z-index: 10;
 }
 
-.wrapper .game:hover{
-    transition: all 0.5s;
-    background-color: rgba(71, 155, 134, 1);
-}
-.wrapper .game p{
+.wrapper .game .overlay p{
+    opacity: 1;
+    transition: opacity 1s;
     color: white;
 }
-.wrapper .disabled{
-    background-color: rgba(71, 155, 134,0.5);
+.tile{
+    z-index: 9;
+    margin: 1px;
+    transition: blackground-color 1s;
+}
+.tile:hover{
+    cursor: grab;
+    border: solid black 5px;
+}
+
+.wall{
+    background-color: rgb(51, 51, 51);
+}
+.unexplored{
+    background-color: rgb(35, 143, 42);
+}
+
+.explored{
+    background-color: gray;
+}
+
+#modal{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    transition: 200ms ease-in-out;
+    border-radius: 20px;
+    z-index: 12;
+    background-color: white;
+    width: 800px;
+    height: 500px;
+    max-width: 80%;
+    text-align: center;
+}
+#modal.active{
+    transform: translate(-50%, -50%) scale(1);
+}
+
+#modal .close-button{
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 3rem;
+    font-weight: bold;
 }
 
 @media screen and (max-width: 800px) {

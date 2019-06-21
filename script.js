@@ -20,12 +20,15 @@ class Character{
 }
 
 //Variables
-let player = {};
+let player = null;
 
 const charName = document.getElementById('name');
 const charClass = document.getElementById('class');
 const gameArea = document.getElementById('game');
-const disabledText = document.getElementById('disabled');
+const disabledOverlay = document.getElementById('disabled');
+const disabledText = document.getElementById('disabled-text');
+let modal = document.getElementById('modal');
+let modalText = document.getElementById('modal-text');
 
 let points = parseInt("10");
 const pPoints = document.getElementById('points');
@@ -40,6 +43,9 @@ let agiOld=parseInt("0");
 let intOld=parseInt("0");
 
 function ChangePoints(currValue, power){
+    if(points == 0){
+        resetSliders();
+    }
     switch(power){
         case "strength":
             points-=(currValue-strOld);//Subtracts the differential of the slider's "before" and "after" states
@@ -79,6 +85,12 @@ function ChangePoints(currValue, power){
     pPoints.innerHTML=points;
 }
 
+function resetSliders(){
+    str.value=0;
+    agi.value=0;
+    int.value=0;
+}
+
 function CheckCharacter(){
     let haveError = false;
     let errorMessage = "";
@@ -96,9 +108,95 @@ function CheckCharacter(){
         //Make a character for the player with the stats
         player = new Character(charName.value, charClass.value, str.value, agi.value, int.value);
         console.log(player);
-       //Let the game start
-        gameArea.classList.remove("disabled");
-        disabledText.style.visibility="hidden";
+        resetSliders();
+       //Hide the overlay
+        disabledText.style.opacity="0";
+        disabledOverlay.style.opacity="0";
+        
+        //Create the tiles
+        //Looped
+        for(let i = 0; i < 100; i++){
+            let tile = document.createElement("div");
+            tile.classList.add("tile");
+            tile.id=i+1;
+            tile.addEventListener('click', ()=> {
+                //Clicking
+                //console.log(tile.classList[1]);
+                //Random event based on what is happening
+                if(validateClick(tile)){
+                    EventModal();//Send the last class
+                    tile.classList.add("explored");
+                }
+            });
+            gameArea.appendChild(tile);
+            
+        }
+        GenerateMap(Array.from(document.getElementsByClassName('tile')));
+        
+        setTimeout(()=>disabledOverlay.style.zIndex="0",2500);
    }
-    
+}
+function GenerateMap(tiles){
+    //Coloring and the layout of the map
+
+    //Get the walls!
+    tiles.forEach(t => {
+        if(t.id < 10 || t.id > 90 || t.id%10==0 || t.id%10==1){
+            t.classList.add("wall");
+        }else{
+            //Random walls
+            let rnd = Math.floor(Math.random()*10)//10% chance
+            if(rnd==0){
+                t.classList.add("wall");
+            }else{
+                t.classList.add("unexplored");
+            }
+        }
+    });
+}
+function validateClick(tile){
+    if(tile.classList.contains("wall") || tile.classList.contains("explored")){
+        return false;
+    }
+    else
+        return true;
+}
+function EventModal(){
+    //Random event
+    //45% chance to fight an enemy
+    //20% trap
+    //20% empty room
+    //10% health potion
+    //5% boss fight
+
+    //Modal pop up
+    let event = "";
+    let chance = Math.floor(Math.random()*100);
+    if(chance <5){
+        //BOSSS
+        event = "BOSS!!!";
+    }
+    if(chance >=5 && chance <15){
+        //Hp potion
+        event = "Hp Potion!";
+    }
+    if(chance >= 15 && chance <35){
+        //Empty room
+        event = "Empty room!";
+    }
+    if(chance >= 35 && chance <55){
+        //Trap
+        event = "Trap!!";
+    }
+    if(chance >= 55){
+        //Fight
+        event = "Fight!!!";
+    }
+    console.log(event);
+    //And after its done, it becomes explored (cant go back to it)
+    modal.classList.add("active");
+    modalText.innerHTML = event;
+}
+function CloseModal(){
+    modal.classList.remove("active");
 }

@@ -11,11 +11,12 @@
 <body>
     <h1>Welcome to the JavaScript RPG Game!</h1>
     <div class="wrapper">
+        
         <section class="character">
             <h4>Create your character</h4>
 
             <label for="name">Name</label>
-            <input type="text" id="name">
+            <input type="text" id="name" autocomplete="off">
 
             <p>Class</p>
             <select id="class">
@@ -47,10 +48,16 @@
             <button id="createBtn" onclick="CheckCharacter()">Create Character</button>
 
         </section>
-        <section class="game disabled" id="game">
-            <p id="disabled">Fill in the character form first</p>
+        <section class="game" id="game">
+
+            <div class="overlay" id="disabled">
+                <p id="disabled-text">Fill in the character form first</p>
+            </div>
         </section>
     </div>
-    
+    <div id="modal">
+        <h1 id="modal-text"></h1>
+        <button class="close-button" onclick="CloseModal()">&times;</button>
+    </div>
 </body>
 </html>
