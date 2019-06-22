@@ -29,6 +29,11 @@ const disabledOverlay = document.getElementById('disabled');
 const disabledText = document.getElementById('disabled-text');
 let modal = document.getElementById('modal');
 let modalText = document.getElementById('modal-text');
+const flipBtn = document.getElementById('flip-btn');
+const charCreateBtn = document.getElementById('createBtn');
+const characterPage = document.getElementsByClassName('character')[0];
+const statPage = document.getElementsByClassName('stats')[0];
+let statistics = document.getElementsByClassName('statistics')[0];
 
 let points = parseInt("10");
 const pPoints = document.getElementById('points');
@@ -109,6 +114,8 @@ function CheckCharacter(){
         player = new Character(charName.value, charClass.value, str.value, agi.value, int.value);
         console.log(player);
         resetSliders();
+        LoadStats();
+        charCreateBtn.disabled = true;
        //Hide the overlay
         disabledText.style.opacity="0";
         disabledOverlay.style.opacity="0";
@@ -195,8 +202,45 @@ function EventModal(){
     console.log(event);
     //And after its done, it becomes explored (cant go back to it)
     modal.classList.add("active");
-    modalText.innerHTML = event;
+    modalText.innerText = event;
 }
 function CloseModal(){
     modal.classList.remove("active");
+    modalText.innerText = "";
+}
+function Flip(){
+    if(!characterPage.classList.contains('char-up') && !statPage.classList.contains('inv-down')){
+        characterPage.classList.add('char-up');
+        statPage.classList.add('inv-down');
+        flipBtn.innerText = "Stats";
+    }else{
+        characterPage.classList.remove('char-up');
+        statPage.classList.remove('inv-down');
+        flipBtn.innerText = "Inventory";
+    }
+}
+function LoadStats(){
+    //Name
+    let name = document.createElement('p');
+    name.innerText = "Character name: "+player.charName;
+    statistics.appendChild(name);
+    //Class
+    let charClass = document.createElement('p');
+    charClass.innerText = "Class: "+player.charClass;
+    statistics.appendChild(charClass);
+    //Strength
+    let charStr = document.createElement('p');
+    charStr.innerText = "Strength: "+player.str;
+    statistics.appendChild(charStr);
+    //Agility
+    let charAgi = document.createElement('p');
+    charAgi.innerText = "Agility: "+player.agi;
+    statistics.appendChild(charAgi);
+    //Intelligence
+    let charInt = document.createElement('p');
+    charInt.innerText = "Intelligence: "+player.int;
+    statistics.appendChild(charInt);
+}
+function TakeDamage(){
+    console.log("Took damage");
 }

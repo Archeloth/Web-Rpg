@@ -13,6 +13,8 @@
     <div class="wrapper">
         
         <section class="character">
+            <!--Character attribute and setting change-->
+            <!--Can toggle between this and the inventory page-->
             <h4>Create your character</h4>
 
             <label for="name">Name</label>
@@ -46,8 +48,22 @@
             </div>
            
             <button id="createBtn" onclick="CheckCharacter()">Create Character</button>
-
+            <!--Inventory-->
+            <div class="stats">
+                <div class="health">
+                    <p>Health</p>
+                    <div class="hp-bar">
+                        <span class="current-health"></span>
+                    </div>
+                </div>
+                <div class="statistics">
+                </div>
+                <div class="inventory"></div>
+            </div>
         </section>
+
+        <button id="flip-btn" onclick="Flip()">Flip</button>
+
         <section class="game" id="game">
 
             <div class="overlay" id="disabled">
@@ -57,6 +73,7 @@
     </div>
     <div id="modal">
         <h1 id="modal-text"></h1>
+        <button onclick="TakeDamage()">Take damage</button>
         <button class="close-button" onclick="CloseModal()">&times;</button>
     </div>
 </body>
