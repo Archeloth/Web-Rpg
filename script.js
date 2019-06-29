@@ -27,6 +27,9 @@ class Character{
     }
 
     Damaged(amount){
+        if(amount == "full"){
+            this.currHp = this.maxHp;
+        }
         if(this.currHp-amount<=this.maxHp){ //Dont get overhealed
             this.currHp-=amount;
         }
@@ -35,6 +38,72 @@ class Character{
         }
     }
 }
+//Lists
+const enemyTypes = [
+    {
+        name: "Pigmen",
+        class: "fighter",
+        str: 2,
+        agi: 2,
+        int: 0
+    },
+    {
+        name: "Spider",
+        class: "fighter",
+        str: 1,
+        agi: 5,
+        int: 2
+    },
+    {
+        name: "Evil Skeleton",
+        class: "rouge",
+        str: 4,
+        agi: 4,
+        int: 2
+    },
+    {
+        name: "Conjurer",
+        class: "mage",
+        str: 2,
+        agi: 2,
+        int: 4
+    },
+    {
+        name: "Necromancer",
+        class: "mage",
+        str: 3,
+        agi: 3,
+        int: 5
+    },
+    {
+        name: "Baby Dragon",
+        class: "fighter",
+        str: 5,
+        agi: 5,
+        int: 2
+    },
+    {
+        name: "Black Sheep",
+        class: "fighter",
+        str: 1,
+        agi: 1,
+        int: 1
+    },
+    {
+        name: "Living Statue",
+        class: "fighter",
+        str: 2,
+        agi: 2,
+        int: 0
+    },
+    {
+        name: "Robber",
+        class: "rogue",
+        str: 2,
+        agi: 4,
+        int: 3
+    }
+]
 
 //Variables
 let player = null;
@@ -45,7 +114,8 @@ const gameArea = document.getElementById('game');
 const disabledOverlay = document.getElementById('disabled');
 const disabledText = document.getElementById('disabled-text');
 let modal = document.getElementById('modal');
-let modalText = document.getElementById('modal-text');
+let modalHeader = document.getElementById('modal-header');
+const modalContent = document.getElementById('modal-content');
 const flipBtn = document.getElementById('flip-btn');
 const charCreateBtn = document.getElementById('createBtn');
 const characterPage = document.getElementsByClassName('character')[0];
@@ -207,14 +277,17 @@ function EventModal(){
     if(chance <5){
         //BOSSS
         event = "BOSS!!!";
+        BossFightEvent();
     }
     if(chance >=5 && chance <15){
         //Hp potion
         event = "Hp Potion!";
+        HealthPotionEvent();
     }
     if(chance >= 15 && chance <35){
         //Empty room
         event = "Empty room!";
+        EmptyRoomEvent();
     }
     if(chance >= 35 && chance <55){
         //Trap
@@ -224,15 +297,20 @@ function EventModal(){
     if(chance >= 55){
         //Fight
         event = "Fight!!!";
+        FightEvent();
     }
     console.log(event);
     //And after its done, it becomes explored (cant go back to it)
     modal.classList.add("active");
-    modalText.innerHTML = event;
+    modalHeader.innerText = event;
 }
 function CloseModal(){
     modal.classList.remove("active");
-    modalText.innerText = "";
+    modalHeader.innerText = "";
+    //Destroys everything inside the modal's content part
+    while(modalContent.firstChild){
+        modalContent.removeChild(modalContent.firstChild);
+    }
 }
 function Flip(){
     if(!characterPage.classList.contains('char-up') && !statPage.classList.contains('inv-down')){
@@ -266,13 +344,17 @@ function LoadStats(){
     let charInt = document.createElement('p');
     charInt.innerText = "Int: "+player.int;
     statistics.appendChild(charInt);
+    //Gold
+    let charGold = document.createElement('p');
+    charGold.innerText = "Gold: "+player.gold;
+    statistics.appendChild(charGold);
 }
 function HealthUpdate(damage){
     //Damage is positive if takes damage, negative if heals
-    
+
     player.Damaged(damage);
     GameOverCheck();
-    console.log(player.CurrHp +"/"+player.MaxHp+"/"+player.isAlive);
+    //console.log(player.CurrHp +"/"+player.MaxHp+"/"+player.isAlive);
 
     healthNumber.innerText=player.CurrHp+"/"+player.MaxHp;
     //Takes the value of the current health and divide it with the max health, to get the current health % to show off in the health bar
@@ -288,5 +370,123 @@ function GameOverCheck(){
     }
 }
 function TrapEvent(){
+    //Text and damage
+    let trapEventText = document.createElement('p');
+    let trapDamage = Math.floor(Math.random() * 5);
+    trapEventText.innerText = `You stepped uppon a spiky trap! You lost ${trapDamage} HP! `;
+    if(trapDamage===0){
+        trapEventText.innerText = "You almost stepped on a spiky trap, but were on your guard! You didn't take damage!";
+    }else{
+        HealthUpdate(trapDamage);
+    }
+    modalContent.appendChild(trapEventText);
+
+    //Approval button
+    let acceptBtn = document.createElement('button');
+    acceptBtn.innerText = 'You patch yourself up and go forth';
+    modalContent.appendChild(acceptBtn);
+    acceptBtn.addEventListener('click', CloseModal);
+}
+function shuffle(a) { //Shuffle an array
+    for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+}
+
+function HealthPotionEvent(){
+    let healthPotionEventText = document.createElement('p');
     
+    healthPotionEventText.innerText = "You stepped into an old and dusty room filled with glass jars and old books that you can't understand. It was clearly somebody's laboratory, but whose? One the desk you can see three potions:";
+    modalContent.appendChild(healthPotionEventText);
+
+    let buttonGroup = document.createElement('div');
+    buttonGroup.style.display = "flex";
+    modalContent.appendChild(buttonGroup);
+
+    let rightChoise = Math.floor(Math.random() * 3); // 0,1,2
+    console.log(rightChoise);
+    let potionVariation = ['Yellow', 'Green', 'Red', 'Orange', 'Blue', 'Pink', 'Black'];
+    
+    shuffle(potionVariation);
+
+    for(let i = 0; i < 3; i++){
+        let potionButton = document.createElement('button');
+        potionButton.innerText = potionVariation[i]+' potion';
+        buttonGroup.appendChild(potionButton);
+        if(i === rightChoise){
+            potionButton.addEventListener('click', () => {
+                healthPotionEventText.innerHTML += "<br>Right choise! You are healing back to full!";
+                HealthUpdate("full");
+                setTimeout(CloseModal, 1000);
+            });
+        }else{
+            potionButton.addEventListener('click', () => {
+                healthPotionEventText.innerHTML += "<br>Seems like it didnt work...";
+                setTimeout(CloseModal, 1000);
+            });
+        }
+    }
+}
+function FightEvent(){ //Maybe a difficulty setting here?
+    //Now its only 1v1
+    
+    let type = enemyTypes[Math.floor(Math.random()*enemyTypes.length)];
+    let enemy = new Character(type.name, type.class, type.str, type.agi, type.int);
+    console.log(enemy);
+
+    //Images of the player on the left, enemy on the right
+    let imageContainer = document.createElement('div');
+    imageContainer.id = "imageContainer";
+    modalContent.appendChild(imageContainer);
+
+    let playerImg = document.createElement('img');
+    playerImg.src = "assets/gemBlue.png";
+    imageContainer.appendChild(playerImg);
+    let enemyImg = document.createElement('img');
+    enemyImg.src = "assets/gemRed.png";
+    imageContainer.appendChild(enemyImg);
+    
+    //Bottom part with the actions
+
+    let ActionContainer = document.createElement('div');
+    ActionContainer.id = "ActionContainer";
+    modalContent.appendChild(ActionContainer);
+
+    //2x2 grid for the action buttons, for the player on the bottom left
+    let actionGroup = document.createElement('div');
+    actionGroup.id = "actionGroup";
+    ActionContainer.appendChild(actionGroup);
+
+    //Need abbilities
+    for(let i = 0; i < 4; i++){
+        let btn = document.createElement('button');
+        btn.innerText = "Action "+(i+1);
+        actionGroup.appendChild(btn);
+    }
+    //Attempts to run away on the bottom right
+
+    //Add a chance to take damage from running away
+    let escapeBtn = document.createElement('button');
+    escapeBtn.innerText = "Attempt to run away";
+    ActionContainer.appendChild(escapeBtn);
+    escapeBtn.addEventListener('click', CloseModal);
+}
+function EmptyRoomEvent(){
+    let emptyEventText = document.createElement('p');
+    emptyEventText.innerText = "You arrived into an empty room. There is nothing interesting here.";
+    modalContent.appendChild(emptyEventText);
+
+    let acceptBtn = document.createElement('button');
+    acceptBtn.innerText = 'You move on to the next area';
+    modalContent.appendChild(acceptBtn);
+    acceptBtn.addEventListener('click', CloseModal);
+}
+function BossFightEvent(){
+
+    let acceptBtn = document.createElement('button');
+    acceptBtn.innerText = "Work in progress, don't judge me!";
+    modalContent.appendChild(acceptBtn);
+    acceptBtn.addEventListener('click', CloseModal);
 }
