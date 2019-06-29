@@ -11,7 +11,6 @@
 <body>
     <h1>Welcome to the JavaScript RPG Game!</h1>
     <div class="wrapper">
-        
         <section class="character">
             <!--Character attribute and setting change-->
             <!--Can toggle between this and the inventory page-->
@@ -53,11 +52,11 @@
                 <div class="health">
                     <p>Health</p>
                     <div class="hp-bar">
-                        <span class="current-health"></span>
+                        <div id="health-number"></div>
+                        <span id="current-health"></span>
                     </div>
                 </div>
-                <div class="statistics">
-                </div>
+                <div class="statistics"></div>
                 <div class="inventory"></div>
             </div>
         </section>
@@ -73,7 +72,8 @@
     </div>
     <div id="modal">
         <h1 id="modal-text"></h1>
-        <button onclick="TakeDamage()">Take damage</button>
+        <button onclick="HealthUpdate(2)">Take damage</button>
+        <button onclick="HealthUpdate(-2)">Heal</button>
         <button class="close-button" onclick="CloseModal()">&times;</button>
     </div>
 </body>

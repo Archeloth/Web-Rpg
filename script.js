@@ -6,16 +6,33 @@ class Character{
         this.str=str;
         this.agi=agi;
         this.int=int;
+
+        //The character's health
+        this.maxHp=Math.round(this.str*1.25+5);
+
+        this.currHp=this.maxHp;
+
+        //Check if the character is still alive
+        this.isAlive = true;
+
+        //Gold in the character's stash
+        this.gold = 0;
     }
-    //The character's health
+    get CurrHp(){
+        return this.currHp;
+    }
+
     get MaxHp(){
-        return Math.round(this.str*1.25);
+        return this.maxHp;
     }
 
-    //currHp = MaxHp();
-
-    set Damaged(amount){
-        this.currHp-=amount;
+    Damaged(amount){
+        if(this.currHp-amount<=this.maxHp){ //Dont get overhealed
+            this.currHp-=amount;
+        }
+        if(this.currHp<=0){
+            this.isAlive=false;
+        }
     }
 }
 
@@ -33,7 +50,9 @@ const flipBtn = document.getElementById('flip-btn');
 const charCreateBtn = document.getElementById('createBtn');
 const characterPage = document.getElementsByClassName('character')[0];
 const statPage = document.getElementsByClassName('stats')[0];
-let statistics = document.getElementsByClassName('statistics')[0];
+const statistics = document.getElementsByClassName('statistics')[0];
+const healthBar = document.getElementById('current-health');
+const healthNumber = document.getElementById('health-number');
 
 let points = parseInt("10");
 const pPoints = document.getElementById('points');
@@ -46,6 +65,8 @@ let int = document.getElementById('intelligence');
 let strOld=parseInt("0");
 let agiOld=parseInt("0");
 let intOld=parseInt("0");
+
+flipBtn.style.display="none";
 
 function ChangePoints(currValue, power){
     if(points == 0){
@@ -110,11 +131,15 @@ function CheckCharacter(){
    if(haveError){
     alert(errorMessage);
    }else{
+       /*STARTS THE GAME HERE */
+       Flip();
+       flipBtn.style.display="block";
         //Make a character for the player with the stats
         player = new Character(charName.value, charClass.value, str.value, agi.value, int.value);
         console.log(player);
         resetSliders();
         LoadStats();
+        HealthUpdate(0);
         charCreateBtn.disabled = true;
        //Hide the overlay
         disabledText.style.opacity="0";
@@ -194,6 +219,7 @@ function EventModal(){
     if(chance >= 35 && chance <55){
         //Trap
         event = "Trap!!";
+        TrapEvent();
     }
     if(chance >= 55){
         //Fight
@@ -202,7 +228,7 @@ function EventModal(){
     console.log(event);
     //And after its done, it becomes explored (cant go back to it)
     modal.classList.add("active");
-    modalText.innerText = event;
+    modalText.innerHTML = event;
 }
 function CloseModal(){
     modal.classList.remove("active");
@@ -222,7 +248,7 @@ function Flip(){
 function LoadStats(){
     //Name
     let name = document.createElement('p');
-    name.innerText = "Character name: "+player.charName;
+    name.innerText = "Name: "+player.charName;
     statistics.appendChild(name);
     //Class
     let charClass = document.createElement('p');
@@ -230,17 +256,37 @@ function LoadStats(){
     statistics.appendChild(charClass);
     //Strength
     let charStr = document.createElement('p');
-    charStr.innerText = "Strength: "+player.str;
+    charStr.innerText = "Str: "+player.str;
     statistics.appendChild(charStr);
     //Agility
     let charAgi = document.createElement('p');
-    charAgi.innerText = "Agility: "+player.agi;
+    charAgi.innerText = "Agi: "+player.agi;
     statistics.appendChild(charAgi);
     //Intelligence
     let charInt = document.createElement('p');
-    charInt.innerText = "Intelligence: "+player.int;
+    charInt.innerText = "Int: "+player.int;
     statistics.appendChild(charInt);
 }
-function TakeDamage(){
-    console.log("Took damage");
+function HealthUpdate(damage){
+    //Damage is positive if takes damage, negative if heals
+    
+    player.Damaged(damage);
+    GameOverCheck();
+    console.log(player.CurrHp +"/"+player.MaxHp+"/"+player.isAlive);
+
+    healthNumber.innerText=player.CurrHp+"/"+player.MaxHp;
+    //Takes the value of the current health and divide it with the max health, to get the current health % to show off in the health bar
+    healthBar.style.width = `${(player.CurrHp/player.MaxHp)*100}%`;
+}
+function GameOverCheck(){
+    if(player.isAlive===false){
+        CloseModal();
+        disabledText.innerText="GAME OVER!";
+        disabledText.style.opacity="1";
+        disabledOverlay.style.opacity="1";
+        setTimeout(()=>disabledOverlay.style.zIndex="10",1000);
+    }
+}
+function TrapEvent(){
+    
 }
