@@ -8,7 +8,7 @@ class Character{
         this.int=int;
 
         //The character's health
-        this.maxHp=Math.round(this.str*1.25+5);
+        this.maxHp=Math.round(this.str*1.25+10);
 
         this.currHp=this.maxHp;
 
@@ -17,7 +17,13 @@ class Character{
 
         //Gold in the character's stash
         this.gold = 0;
+
+        this.abilities = [];
     }
+    SetGold(amount){
+        this.gold+=amount;
+    }
+
     get CurrHp(){
         return this.currHp;
     }
@@ -56,7 +62,7 @@ const enemyTypes = [
     },
     {
         name: "Evil Skeleton",
-        class: "rouge",
+        class: "rogue",
         str: 4,
         agi: 4,
         int: 2
@@ -105,6 +111,93 @@ const enemyTypes = [
     }
 ]
 
+const allAbilities = [
+    {
+        name: 'Slash',
+        baseDamage: 4,
+        description: "Slashing enemies in front of you",
+        modifier: "str",
+        specificClass: "fighter"
+    },
+    {
+        name: 'Block',
+        baseDamage: 1,
+        description: "Blocking incoming attacks",
+        modifier: "agi",
+        specificClass: "fighter"
+    },
+    {
+        name: 'Thrust',
+        baseDamage: 6,
+        description: "Thrusting your sword right at the enemy",
+        modifier: "str",
+        specificClass: "fighter"
+    },
+    {
+        name: 'Pray',
+        baseDamage: 0,
+        description: "Minor healing and empowering next attack",
+        modifier: "int",
+        specificClass: "fighter"
+    },
+    {
+        name: 'Fireball',
+        baseDamage: 4,
+        description: "Shoots a fireball",
+        modifier: "int",
+        specificClass: "mage"
+    },
+    {
+        name: 'Shock',
+        baseDamage: 1,
+        description: "Shoots lightning and stuns enemies",
+        modifier: "agi",
+        specificClass: "mage"
+    },
+    {
+        name: 'Curse',
+        baseDamage: 6,
+        description: "Highly debuffs enemies",
+        modifier: "int",
+        specificClass: "mage"
+    },
+    {
+        name: 'Channel',
+        baseDamage: 0,
+        description: "Buffs next attack",
+        modifier: "str",
+        specificClass: "mage"
+    },
+    {
+        name: 'Stab',
+        baseDamage: 4,
+        description: "Stabs your dagger in the enemies back",
+        modifier: "agi",
+        specificClass: "rogue"
+    },
+    {
+        name: 'Dodge',
+        baseDamage: 1,
+        description: "Rolls to safety, away from incoming attacks",
+        modifier: "agi",
+        specificClass: "rogue"
+    },
+    {
+        name: 'Plot',
+        baseDamage: 6,
+        description: "Debuffs enemies with their secrets used against them",
+        modifier: "int",
+        specificClass: "rogue"
+    },
+    {
+        name: 'Disguise',
+        baseDamage: 0,
+        description: "Stunt enemies",
+        modifier: "int",
+        specificClass: "rogue"
+    },
+]
+
 //Variables
 let player = null;
 
@@ -123,6 +216,12 @@ const statPage = document.getElementsByClassName('stats')[0];
 const statistics = document.getElementsByClassName('statistics')[0];
 const healthBar = document.getElementById('current-health');
 const healthNumber = document.getElementById('health-number');
+const statName = document.getElementById('charName');
+const statClass = document.getElementById('charClass');
+const statStr = document.getElementById('charStr');
+const statAgi = document.getElementById('charAgi');
+const statInt = document.getElementById('charInt');
+const statGold = document.getElementById('charGold');
 
 let points = parseInt("10");
 const pPoints = document.getElementById('points');
@@ -206,9 +305,15 @@ function CheckCharacter(){
        flipBtn.style.display="block";
         //Make a character for the player with the stats
         player = new Character(charName.value, charClass.value, str.value, agi.value, int.value);
+        //Giving the player its class specific abilities
+        allAbilities.forEach((ability) => {
+            if(ability.specificClass == charClass.value){
+                player.abilities.push(ability);
+            }
+        });
         console.log(player);
         resetSliders();
-        LoadStats();
+        UpdateStats();
         HealthUpdate(0);
         charCreateBtn.disabled = true;
        //Hide the overlay
@@ -323,31 +428,14 @@ function Flip(){
         flipBtn.innerText = "Inventory";
     }
 }
-function LoadStats(){
-    //Name
-    let name = document.createElement('p');
-    name.innerText = "Name: "+player.charName;
-    statistics.appendChild(name);
-    //Class
-    let charClass = document.createElement('p');
-    charClass.innerText = "Class: "+player.charClass;
-    statistics.appendChild(charClass);
-    //Strength
-    let charStr = document.createElement('p');
-    charStr.innerText = "Str: "+player.str;
-    statistics.appendChild(charStr);
-    //Agility
-    let charAgi = document.createElement('p');
-    charAgi.innerText = "Agi: "+player.agi;
-    statistics.appendChild(charAgi);
-    //Intelligence
-    let charInt = document.createElement('p');
-    charInt.innerText = "Int: "+player.int;
-    statistics.appendChild(charInt);
-    //Gold
-    let charGold = document.createElement('p');
-    charGold.innerText = "Gold: "+player.gold;
-    statistics.appendChild(charGold);
+function UpdateStats(){
+    statName.innerText = "Name: "+player.charName;
+    statClass.innerText = "Class: "+player.charClass;
+    statStr.innerText = "Str: "+player.str;
+    statAgi.innerText = "Agi: "+player.agi;
+    statInt.innerText = "Int: "+player.int;
+    statGold.innerText = ": "+player.gold;
+    
 }
 function HealthUpdate(damage){
     //Damage is positive if takes damage, negative if heals
@@ -434,6 +522,15 @@ function FightEvent(){ //Maybe a difficulty setting here?
     
     let type = enemyTypes[Math.floor(Math.random()*enemyTypes.length)];
     let enemy = new Character(type.name, type.class, type.str, type.agi, type.int);
+    //Give random amount of gold to the enemy, to loot if won
+    enemy.SetGold(Math.floor(Math.random()*10));
+
+    allAbilities.forEach((ability) => {
+        if(ability.specificClass == enemy.charClass){
+            enemy.abilities.push(ability);
+        }
+    });
+
     console.log(enemy);
 
     //Images of the player on the left, enemy on the right
@@ -444,10 +541,19 @@ function FightEvent(){ //Maybe a difficulty setting here?
     let playerImg = document.createElement('img');
     playerImg.src = "assets/gemBlue.png";
     imageContainer.appendChild(playerImg);
+
+    //Container for the enemy image and health bar
+    let enemyContainer = document.createElement('div');
+    imageContainer.appendChild(enemyContainer);
+
     let enemyImg = document.createElement('img');
     enemyImg.src = "assets/gemRed.png";
-    imageContainer.appendChild(enemyImg);
+    enemyContainer.appendChild(enemyImg);
     
+    let enemyHealthBar = document.createElement('div');
+    enemyHealthBar.id="enemyHealth";
+    enemyContainer.appendChild(enemyHealthBar);
+
     //Bottom part with the actions
 
     let ActionContainer = document.createElement('div');
@@ -459,20 +565,119 @@ function FightEvent(){ //Maybe a difficulty setting here?
     actionGroup.id = "actionGroup";
     ActionContainer.appendChild(actionGroup);
 
-    //Need abbilities
-    for(let i = 0; i < 4; i++){
+    //Abilities => buttons
+    let i = 0;
+    while(i<player.abilities.length){
         let btn = document.createElement('button');
-        btn.innerText = "Action "+(i+1);
+        btn.innerText = player.abilities[i].name;
+        btn.title = player.abilities[i].description+"\nDeals "+player.abilities[i].baseDamage+" + "+player.abilities[i].modifier+" *0.35";
         actionGroup.appendChild(btn);
+
+        btn.addEventListener('click',() => {
+            //Add a specific event based on which ability was used
+
+            //Animation for fighting
+            //Adding an extra class to the image containter
+            imageContainer.classList.add("fighting");
+
+            //Just damage the enemy for now
+            let selectedAbility = player.abilities.find(function(a) {
+                if(a.name == btn.innerText){
+                    return a;
+                }
+            });
+            //Basedamage * modifier
+            let damageAmountFromPlayer = 0;
+            switch(selectedAbility.modifier){
+                case "str": damageAmountFromPlayer = Math.floor(selectedAbility.baseDamage + (player.str * 0.35));
+                case "agi": damageAmountFromPlayer = Math.floor(selectedAbility.baseDamage + (player.agi * 0.35));
+                case "int": damageAmountFromPlayer = Math.floor(selectedAbility.baseDamage + (player.int * 0.35));
+            }
+            enemy.Damaged(damageAmountFromPlayer);
+            
+            //Enemy counter attack, with random ability
+            let counterAttack = enemy.abilities[Math.floor(Math.random()*enemy.abilities.length)];
+            let damagedByEnemy = 0;
+            let enemyDifficultyModifier = 0.5;
+            switch(selectedAbility.modifier){//
+                case "str": damagedByEnemy = Math.floor((counterAttack.baseDamage + (enemy.str * 0.35)) * enemyDifficultyModifier);
+                case "agi": damagedByEnemy = Math.floor((counterAttack.baseDamage + (enemy.agi * 0.35)) * enemyDifficultyModifier);
+                case "int": damagedByEnemy = Math.floor((counterAttack.baseDamage + (enemy.int * 0.35)) * enemyDifficultyModifier);
+            }
+            
+            //Delay to wait for the animation to finish
+            setTimeout(()=>{
+                if(enemy.isAlive == false){
+                    alert(`You won and looted ${enemy.gold} gold from the enemy`);
+                    player.SetGold(enemy.gold);
+                    UpdateStats();
+                    CloseModal();
+                    //Updates the starts of the player (the GOLD)
+                    UpdateStats();
+                }
+                imageContainer.classList.remove("fighting");
+                enemyHealthBar.style.height = (enemy.currHp/enemy.maxHp)*100+"%";
+                HealthUpdate(damagedByEnemy);
+            },2000);
+
+            //Gives the player another chance to escape, refreshing its escape chances
+            escapeChance = Math.floor(Math.random()*2);//0-1
+            
+        });
+        i++;
     }
     //Attempts to run away on the bottom right
+    let escapeChance = Math.floor(Math.random()*2);//0-1
+    
 
     //Add a chance to take damage from running away
     let escapeBtn = document.createElement('button');
     escapeBtn.innerText = "Attempt to run away";
     ActionContainer.appendChild(escapeBtn);
-    escapeBtn.addEventListener('click', CloseModal);
+
+    escapeBtn.addEventListener('click', () =>{
+        if(escapeChance == 0){
+            CloseModal();
+        }else{
+            alert("You couldn't escape and took 2 damage!");
+            HealthUpdate(2);
+        }
+    });
+
+
+    //Info panel to the enemy
+    let infoPanel = document.createElement('div');
+    infoPanel.id = "infoPanel";
+    ActionContainer.append(infoPanel);
+
+        let eType = document.createElement('p');
+        eType.innerText = enemy.charName;
+        infoPanel.append(eType);
+
+        let eHp = document.createElement('p');
+        eHp.innerText = "Max HP: "+enemy.MaxHp;
+        infoPanel.append(eHp);
+
+        let eClass = document.createElement('p');
+        eClass.innerText = enemy.charClass;
+        infoPanel.append(eClass);
+
+        let eStr = document.createElement('p');
+        eStr.innerText = "Str: "+enemy.str;
+        infoPanel.append(eStr);
+
+        let eAgi = document.createElement('p');
+        eAgi.innerText = "Agi: "+enemy.agi;
+        infoPanel.append(eAgi);
+
+        let eInt = document.createElement('p');
+        eInt.innerText = "Int: "+enemy.int;
+        infoPanel.append(eInt);
+
+    
+    
 }
+
 function EmptyRoomEvent(){
     let emptyEventText = document.createElement('p');
     emptyEventText.innerText = "You arrived into an empty room. There is nothing interesting here.";

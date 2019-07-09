@@ -267,7 +267,7 @@ h1{
     background-color: white;
     width: 5000px;
     height: 300px;
-    max-width: 80%;
+    max-width: 50%;
     text-align: center;
 }
 #modal h1{
@@ -321,6 +321,48 @@ h1{
     display: grid;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(2, 1fr);
+}
+#imageContainer{
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+#imageContainer > img{
+    height: 100%;
+}
+#enemyHealth{
+    display: inline-block;
+    height: 100%;
+    width: 20px;
+    background-color: red;
+}
+.fighting{
+    animation: fight 2s linear;
+}
+#infoPanel{
+    height: 90%;
+    width: 100px;
+    text-align: center;
+    color: white;
+    border: 2px solid black;
+    background-color: gray;
+    text-align: left;
+    white-space: nowrap;
+}
+#infoPanel > p{
+    text-align: center;
+}
+
+@keyframes fight{
+    0%, 100%{
+        justify-content: space-around;
+    }
+    25%, 75%{
+        justify-content: space-evenly;
+    }
+    50%{
+        justify-content: center;
+    }
 }
 
 @media screen and (max-width: 800px) {
