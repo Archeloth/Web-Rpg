@@ -1,3 +1,10 @@
+/*
+TODO:
+-   add mozilla support to the sliders
+-   mana/stamina system, so the player can't spam the same abilities
+-   restart when the level ends, and give another goal to the player, give them + skillpoints to spend
+-   add correct graphics and animations
+*/
 //Classes
 class Character{
     constructor(charName, charClass, str, agi, int){
@@ -117,84 +124,96 @@ const allAbilities = [
         baseDamage: 4,
         description: "Slashing enemies in front of you",
         modifier: "str",
-        specificClass: "fighter"
+        specificClass: "fighter",
+        effect: "damage"
     },
     {
         name: 'Block',
         baseDamage: 1,
         description: "Blocking incoming attacks",
         modifier: "agi",
-        specificClass: "fighter"
+        specificClass: "fighter",
+        effect: "block"
     },
     {
         name: 'Thrust',
         baseDamage: 6,
         description: "Thrusting your sword right at the enemy",
         modifier: "str",
-        specificClass: "fighter"
+        specificClass: "fighter",
+        effect: "damage"
     },
     {
         name: 'Pray',
         baseDamage: 0,
         description: "Minor healing and empowering next attack",
         modifier: "int",
-        specificClass: "fighter"
+        specificClass: "fighter",
+        effect: "channel"
     },
     {
         name: 'Fireball',
         baseDamage: 4,
         description: "Shoots a fireball",
         modifier: "int",
-        specificClass: "mage"
+        specificClass: "mage",
+        effect: "damage"
     },
     {
         name: 'Shock',
         baseDamage: 1,
         description: "Shoots lightning and stuns enemies",
         modifier: "agi",
-        specificClass: "mage"
+        specificClass: "mage",
+        effect: "damage"
     },
     {
         name: 'Curse',
         baseDamage: 6,
         description: "Highly debuffs enemies",
         modifier: "int",
-        specificClass: "mage"
+        specificClass: "mage",
+        effect: "debuff"
     },
     {
         name: 'Channel',
         baseDamage: 0,
         description: "Buffs next attack",
         modifier: "str",
-        specificClass: "mage"
+        specificClass: "mage",
+        effect: "channel"
     },
     {
         name: 'Stab',
         baseDamage: 4,
         description: "Stabs your dagger in the enemies back",
         modifier: "agi",
-        specificClass: "rogue"
+        specificClass: "rogue",
+        effect: "damage"
     },
     {
         name: 'Dodge',
         baseDamage: 1,
         description: "Rolls to safety, away from incoming attacks",
         modifier: "agi",
-        specificClass: "rogue"
+        specificClass: "rogue",
+        effect: "block"
     },
     {
         name: 'Plot',
         baseDamage: 6,
         description: "Debuffs enemies with their secrets used against them",
         modifier: "int",
-        specificClass: "rogue"
+        specificClass: "rogue",
+        effect: "debuff"
     },
     {
         name: 'Disguise',
         baseDamage: 0,
         description: "Stunt enemies",
         modifier: "int",
-        specificClass: "rogue"
+        specificClass: "rogue",
+        effect: "block"
     },
 ]
 
@@ -319,7 +338,23 @@ function CheckCharacter(){
        //Hide the overlay
         disabledText.style.opacity="0";
         disabledOverlay.style.opacity="0";
-        
+        //Map objective
+        alert("OBJECTIVE: Collect 50 gold");
+
+        //Custom cursor based on the player's class
+        const body = document.getElementsByTagName('body')[0];
+        switch(player.charClass){
+            case "fighter":
+                body.style.cursor = "url('assets/cursors/sword.cur'), pointer";
+                break;
+            case "rogue":
+                body.style.cursor = "url('assets/cursors/dagger.cur'), pointer";
+                break;
+            case "mage":
+                body.style.cursor = "url('assets/cursors/wand.cur'), pointer";
+                break;
+        }
+
         //Create the tiles
         //Looped
         for(let i = 0; i < 100; i++){
@@ -434,7 +469,7 @@ function UpdateStats(){
     statStr.innerText = "Str: "+player.str;
     statAgi.innerText = "Agi: "+player.agi;
     statInt.innerText = "Int: "+player.int;
-    statGold.innerText = ": "+player.gold;
+    statGold.innerText = "Gold: "+player.gold;
     
 }
 function HealthUpdate(damage){
@@ -449,9 +484,18 @@ function HealthUpdate(damage){
     healthBar.style.width = `${(player.CurrHp/player.MaxHp)*100}%`;
 }
 function GameOverCheck(){
+    //Player died
     if(player.isAlive===false){
         CloseModal();
         disabledText.innerText="GAME OVER!";
+        disabledText.style.opacity="1";
+        disabledOverlay.style.opacity="1";
+        setTimeout(()=>disabledOverlay.style.zIndex="10",1000);
+    }
+    //Player won the game
+    if(player.gold >= 50){
+        CloseModal();
+        disabledText.innerText="YOU WON! THANK YOU FOR PLAYING MY GAME :)";
         disabledText.style.opacity="1";
         disabledOverlay.style.opacity="1";
         setTimeout(()=>disabledOverlay.style.zIndex="10",1000);
@@ -586,6 +630,15 @@ function FightEvent(){ //Maybe a difficulty setting here?
                     return a;
                 }
             });
+            
+            if(selectedAbility.effect == "channel"){
+                player.Damaged(-5);
+            }
+            let blockActive = false;
+            if(selectedAbility.effect == "block"){
+                blockActive = true;
+            }
+
             //Basedamage * modifier
             let damageAmountFromPlayer = 0;
             switch(selectedAbility.modifier){
@@ -607,6 +660,10 @@ function FightEvent(){ //Maybe a difficulty setting here?
             
             //Delay to wait for the animation to finish
             setTimeout(()=>{
+                if(blockActive == true){
+                    damagedByEnemy = 0;
+                    blockActive = false;
+                }
                 if(enemy.isAlive == false){
                     alert(`You won and looted ${enemy.gold} gold from the enemy`);
                     player.SetGold(enemy.gold);
@@ -619,6 +676,7 @@ function FightEvent(){ //Maybe a difficulty setting here?
                 enemyHealthBar.style.height = (enemy.currHp/enemy.maxHp)*100+"%";
                 HealthUpdate(damagedByEnemy);
             },2000);
+            
 
             //Gives the player another chance to escape, refreshing its escape chances
             escapeChance = Math.floor(Math.random()*2);//0-1
@@ -673,9 +731,6 @@ function FightEvent(){ //Maybe a difficulty setting here?
         let eInt = document.createElement('p');
         eInt.innerText = "Int: "+enemy.int;
         infoPanel.append(eInt);
-
-    
-    
 }
 
 function EmptyRoomEvent(){
