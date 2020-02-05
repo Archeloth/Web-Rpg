@@ -1,390 +1,567 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
 }
-::-webkit-scrollbar{
-    width: 7px;
-    height: 7px;
+
+body {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  background-color: #4d4d4d;
 }
-::-webkit-scrollbar-thumb{
-  background-color:   rgb(204, 111, 111);
-  border-radius: 2px;
+
+h1 {
+  text-align: right;
+  padding-right: 5vw;
+  border-bottom: solid black 5px;
 }
-::-webkit-scrollbar-thumb:hover{
-    background-color:   rgb(255, 144, 144);
+
+.wrapper {
+  margin-top: 5vh;
+  height: 85vh;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
-::-webkit-scrollbar-corner{
-    display: none;
+
+.wrapper .character {
+  position: relative;
+  width: 15vw;
+  height: 90%;
+  background-color: #834848;
+  margin-left: 5vw;
+  margin-right: 5vw;
+  text-align: center;
+  border-radius: 10px;
+  border: 5px solid black;
+  -webkit-transition: -webkit-transform 500ms ease-in-out;
+  transition: -webkit-transform 500ms ease-in-out;
+  transition: transform 500ms ease-in-out;
+  transition: transform 500ms ease-in-out, -webkit-transform 500ms ease-in-out;
 }
-body{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+
+.wrapper .character #name, .wrapper .character #class {
+  border: none;
+  width: 90%;
+  background-color: #cc6f6f;
+  border-radius: 10px;
+  font-size: 1.25rem;
 }
-h1{
-    text-align: right;
-    
-    padding-right: 5vw;
-    border-bottom: solid black 5px;
+
+.wrapper .character .attribute {
+  margin-top: 2em;
 }
-.wrapper{
-    margin-top: 5vh;
-    height: 85vh;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+
+.wrapper .character .attribute input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
 }
-.wrapper .character{
-    position: relative;
-    width: 15vw;
-    height: 90%;
-    background-color: rgb(131, 72, 72);
-    margin-left: 5vw;
-    text-align: center;
-    transition: transform 500ms ease-in-out;
-    /*backface-visibility: hidden;*/
-}
-#name{
-    border: none;
-    width: 90%;
-    background-color: rgb(236, 140, 140);
-    border-radius: 10px;
-    direction: rtl;
-    font-size: 1.25rem;
-}
-#class{
-    border: none;
-    width: 90%;
-    background-color: rgb(236, 140, 140);
-    border-radius: 10px;
-    text-align-last: center;
-}
-.wrapper .character select{
-    width: 100%;
-}
-.wrapper .character .attribute{
-    display: flex;
-    justify-content: space-between;
-    padding-left: 10px;
-    margin-top: 2em;
-}
-.wrapper .character .attribute input[type="range"]{
-    -webkit-appearance: none;
-    width: 40%;
-    margin-right: 5px;
-    background: transparent;
-}
-.wrapper .character .attribute input[type="range"]::-webkit-slider-thumb{
-    -webkit-appearance: none;
-}
-.wrapper .character .attribute input[type="range"]:focus{
-    outline: none;
-}
+
 .wrapper .character .attribute input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: 1px solid #000000;
-    height: 36px;
-    width: 16px;
-    border-radius: 3px;
-    background: rgb(236, 140, 140);
-    cursor: pointer;
-    margin-top: -14px; /* You need to specify a margin in Chrome, but in Firefox and IE it is automatic */
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d; /* Add cool effects to your sliders! */
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 16px;
+  width: 10px;
+  border-radius: 3px;
+  background: #4d4d4d;
+  cursor: pointer;
+  margin-top: -14px;
+  -webkit-box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+          box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
+
+.wrapper .character .attribute input[type=range]::-moz-range-thumb {
+  -webkit-appearance: none;
+  border: 1px solid #000000;
+  height: 16px;
+  width: 10px;
+  border-radius: 3px;
+  background: #4d4d4d;
+  cursor: pointer;
+  margin-top: -14px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+}
+
+.wrapper .character .attribute input[type=range]::-ms-thumb {
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 36px;
+  width: 16px;
+  border-radius: 3px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
 .wrapper .character .attribute input[type=range]::-webkit-slider-runnable-track {
-    width: 100%;
-    height: 8.4px;
-    cursor: pointer;
-    box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
-    background: rgb(95, 82, 82);
-    border-radius: 1.3px;
-    border: 0.2px solid #010101;
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  -webkit-box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+          box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #cc6f6f;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
 }
 
 .wrapper .character .attribute input[type=range]:focus::-webkit-slider-runnable-track {
-    background: rgb(95, 82, 82);
-}
-#createBtn{
-    margin-top: 2em;
-    width: 90%;
-    height: 2rem;
-    font-weight: bolder;
-    border: none;
-    background-color: rgb(204, 111, 111);
-    border-radius: 10px;
-    transition: background-color 0.2s;
-    outline: none;
-}
-#createBtn:hover{
-    background-color: rgb(255, 144, 144);
-    cursor: pointer;
+  background: #367ebd;
 }
 
-.stats{
-    position: absolute;
-    z-index: -1;/**/
-    background-color: rgb(131, 72, 72);
-    width: 100%;
-    height: 100%;
-    top: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-evenly;
-    align-items: center;
-    color: white;
-    font-size: 1.25rem;
-    transform: rotateY(-180deg);
-}
-#flip-btn{
-    position: fixed;
-    width: 15%;
-    margin-left: 5%;
-    top: calc(100% - 30px);
-    left: 0;
-    height: 30px;
-    border: none;
-    outline: none;
-    background-color: rgb(204, 111, 111);
-    color: white;
-    transition: background-color 0.2s;
-}
-#flip-btn:hover{
-    background-color: rgb(255, 144, 144);
+.wrapper .character .attribute input[type=range]::-moz-range-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
+  background: #cc6f6f;
+  border-radius: 1.3px;
+  border: 0.2px solid #010101;
 }
 
-.char-up{
-    transform: rotateY(-180deg);
-}
-.inv-down{
-    z-index: 2;
-}
-.health{
-    width: 80%;
-}
-.health .hp-bar{
-    height: 30px;
-    width: 100%;
-    border: 2px solid black;
-    background: red;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-#current-health{
-    display: block;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: green;
-    transition: width 1s;
-}
-#health-number{
-    z-index: 1;
-    opacity: 0;
-}
-#health-number:hover{
-    opacity: 1;
-    cursor: default;
-}
-.statistics{
-    height: 30%;
-    width: 80%;
-    border: 2px solid black;
-    background-color: gray;
-    text-align: left;
-    white-space: nowrap;
-    overflow: scroll;
+.wrapper .character .attribute input[type=range]::-ms-track {
+  width: 100%;
+  height: 8.4px;
+  cursor: pointer;
+  background: transparent;
+  border-color: transparent;
+  border-width: 16px 0;
+  color: transparent;
 }
 
-.inventory{
-    height: 50%;
-    width: 80%;
-    border: 2px solid black;
-    background-color: gray;
+.wrapper .character .attribute input[type=range]::-ms-fill-lower {
+  background: #2a6495;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
-.wrapper .game{
-    background-color: rgb(131, 131, 131);
-    width: 70vw;
-    height: 90%;
-    margin-right: 5vw;
-    position: relative;
-    display: grid;
-    grid-template-columns: repeat(10,calc(100% / 10));
-    grid-template-rows: repeat(10,calc(100% / 10) );
+.wrapper .character .attribute input[type=range]:focus::-ms-fill-lower {
+  background: #cc6f6f;
 }
 
-.overlay{
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.7 );
-    opacity: 1;
-    transition: opacity 3s;
-    z-index: 10;
+.wrapper .character .attribute input[type=range]::-ms-fill-upper {
+  background: #cc6f6f;
+  border: 0.2px solid #010101;
+  border-radius: 2.6px;
+  box-shadow: 1px 1px 1px #000000, 0px 0px 1px #0d0d0d;
 }
 
-.wrapper .game .overlay p{
-    opacity: 1;
-    transition: opacity 1s;
-    color: white;
-}
-.tile{
-    z-index: 9;
-    margin: 1px;
-    transition: blackground-color 1s;
-}
-.tile:hover{
-    border: solid black 5px;
+.wrapper .character .attribute input[type=range]:focus::-ms-fill-upper {
+  background: #367ebd;
 }
 
-.wall{
-    background-color: rgb(51, 51, 51);
-}
-.unexplored{
-    background-color: rgb(35, 143, 42);
-}
-
-.explored{
-    background-color: gray;
-}
-
-#modal{
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    transition: 200ms ease-in-out;
-    border-radius: 20px;
-    z-index: 12;
-    background-color: white;
-    width: 5000px;
-    height: 300px;
-    max-width: 50%;
-    text-align: center;
-}
-#modal h1{
-    width: 100%;
-}#modal #modal-content{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    height: calc(100% - 2em);
-}
-#modal button{
-    margin: 15px;
-    font-size: 1.25rem;
-    padding: 5px;
-    outline: none;
-    border: none;
-    border-radius: 5px;
-    background-color: rgb(204, 111, 111);
-    color: white;
-    transition: background-color 0.2s;
-}
-#modal button:hover{
-    background-color: rgb(255, 144, 144);
-}
-#modal.active{
-    transform: translate(-50%, -50%) scale(1);
+.wrapper .character #createBtn {
+  margin-top: 2em;
+  width: 90%;
+  height: 2rem;
+  font-weight: bolder;
+  border-radius: 10px;
+  background-color: #4d4d4d;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+  border: 3px solid #cc6f6f;
 }
 
-#modal .close-button{
-    cursor: pointer;
-    border: none;
-    outline: none;
-    background: none;
-    font-size: 3rem;
-    font-weight: bold;
+.wrapper .character #createBtn:hover {
+  background-color: #834848;
+  cursor: pointer;
 }
-#imageContainer{
-    display: flex;
-    flex-direction: row;
+
+.wrapper .game {
+  background-color: #292929;
+  width: 70vw;
+  height: 90%;
+  margin-right: 5vw;
+  position: relative;
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: (calc(100% / 10))[10];
+      grid-template-columns: repeat(10, calc(100% / 10));
+  -ms-grid-rows: (calc(100% / 10))[10];
+      grid-template-rows: repeat(10, calc(100% / 10));
+}
+
+.wrapper .game .overlay {
+  position: absolute;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  opacity: 1;
+  -webkit-transition: opacity 3s;
+  transition: opacity 3s;
+  z-index: 10;
+}
+
+.wrapper .game .overlay p {
+  opacity: 1;
+  -webkit-transition: opacity 1s;
+  transition: opacity 1s;
+  color: white;
+}
+
+.stats {
+  position: absolute;
+  z-index: -1;
+  /**/
+  background-color: #834848;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  color: white;
+  font-size: 1.25rem;
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+#flip-btn {
+  position: fixed;
+  width: 15%;
+  margin-left: 5%;
+  top: calc(100% - 30px);
+  left: 0;
+  height: 30px;
+  border: 3px solid #cc6f6f;
+  outline: none;
+  border-radius: 10px;
+  background-color: #4d4d4d;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#flip-btn:hover {
+  cursor: pointer;
+  background-color: #cc6f6f;
+}
+
+.char-up {
+  -webkit-transform: rotateY(-180deg);
+          transform: rotateY(-180deg);
+}
+
+.inv-down {
+  z-index: 2;
+}
+
+.health {
+  width: 80%;
+}
+
+.health .hp-bar {
+  height: 30px;
+  width: 100%;
+  border: 2px solid black;
+  background: red;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+#current-health {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: green;
+  -webkit-transition: width 1s;
+  transition: width 1s;
+}
+
+#health-number {
+  z-index: 1;
+  opacity: 0;
+}
+
+#health-number:hover {
+  opacity: 1;
+  cursor: pointer;
+}
+
+.statistics {
+  height: 30%;
+  width: 80%;
+  border: 2px solid black;
+  background-color: gray;
+  text-align: left;
+  white-space: nowrap;
+  overflow: scroll;
+}
+
+.inventory {
+  height: 50%;
+  width: 80%;
+  border: 2px solid black;
+  background-color: gray;
+}
+
+.tile {
+  z-index: 9;
+  margin: 1px;
+  -webkit-transition: blackground-color 1s;
+  transition: blackground-color 1s;
+}
+
+.tile:hover {
+  border: solid black 5px;
+}
+
+.wall {
+  background-color: #333333;
+}
+
+.unexplored {
+  background-color: #238f2a;
+}
+
+.explored {
+  background-color: gray;
+}
+
+#modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%) scale(0);
+          transform: translate(-50%, -50%) scale(0);
+  -webkit-transition: 200ms ease-in-out;
+  transition: 200ms ease-in-out;
+  border: 5px solid #834848;
+  border-radius: 20px;
+  z-index: 12;
+  background-color: #4d4d4d;
+  width: auto;
+  height: auto;
+  max-width: 50%;
+  text-align: center;
+  padding: 2em 1em;
+}
+
+#modal.active {
+  -webkit-transform: translate(-50%, -50%) scale(1);
+          transform: translate(-50%, -50%) scale(1);
+}
+
+#modal h1 {
+  width: 100%;
+}
+
+#modal #modal-content {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  height: calc(100% - 2em);
+}
+
+#modal button {
+  margin: 15px;
+  font-size: 1.25rem;
+  padding: 5px;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  background-color: #333333;
+  color: white;
+  -webkit-transition: background-color 0.2s;
+  transition: background-color 0.2s;
+}
+
+#modal button:hover {
+  cursor: pointer;
+  background-color: #ff9090;
+}
+
+#modal .close-button {
+  cursor: pointer;
+  border: none;
+  outline: none;
+  background: none;
+  font-size: 3rem;
+  font-weight: bold;
+}
+
+#modal #imageContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#modal #ActionContainer {
+  width: 100%;
+  border-top: solid black 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#modal #actionGroup {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-rows: (1fr)[2];
+      grid-template-rows: repeat(2, 1fr);
+  -ms-grid-columns: (1fr)[2];
+      grid-template-columns: repeat(2, 1fr);
+}
+
+#modal #imageContainer {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#modal #imageContainer > img {
+  height: 100%;
+}
+
+#modal #enemyHealth {
+  display: inline-block;
+  height: 100%;
+  width: 20px;
+  background-color: red;
+}
+
+#modal .fighting {
+  -webkit-animation: fight 2s linear;
+          animation: fight 2s linear;
+}
+
+#modal #infoPanel {
+  height: 90%;
+  width: 100px;
+  text-align: center;
+  color: white;
+  border: 2px solid black;
+  background-color: gray;
+  text-align: left;
+  white-space: nowrap;
+}
+
+#modal #infoPanel > p {
+  text-align: center;
+}
+
+#modal #enemyHealth {
+  -webkit-transition: height 1s;
+  transition: height 1s;
+}
+
+@-webkit-keyframes fight {
+  0%, 100% {
     justify-content: space-around;
+  }
+  25%, 75% {
+    -webkit-box-pack: space-evenly;
+            justify-content: space-evenly;
+  }
+  50% {
+    -webkit-box-pack: center;
+            justify-content: center;
+  }
 }
-#ActionContainer{
-    width: 100%;
-    border-top: solid black 5px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-}
-#actionGroup{
-    display: grid;
-    grid-template-rows: repeat(2, 1fr);
-    grid-template-columns: repeat(2, 1fr);
-}
-#imageContainer{
-    width: 100%;
-    display: flex;
-    justify-content: space-around;
-}
-#imageContainer > img{
-    height: 100%;
-}
-#enemyHealth{
-    display: inline-block;
-    height: 100%;
-    width: 20px;
-    background-color: red;
-}
-.fighting{
-    animation: fight 2s linear;
-}
-#infoPanel{
-    height: 90%;
-    width: 100px;
-    text-align: center;
-    color: white;
-    border: 2px solid black;
-    background-color: gray;
-    text-align: left;
-    white-space: nowrap;
-}
-#infoPanel > p{
-    text-align: center;
-}
-#enemyHealth{
-    transition: height 1s;
-}
-@keyframes fight{
-    0%, 100%{
+
+@keyframes fight {
+  0%, 100% {
+    -ms-flex-pack: distribute;
         justify-content: space-around;
-    }
-    25%, 75%{
-        justify-content: space-evenly;
-    }
-    50%{
-        justify-content: center;
-    }
+  }
+  25%, 75% {
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+  }
+  50% {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
 }
 
 @media screen and (max-width: 800px) {
-    .wrapper{
-        margin-top: 0;
-        flex-direction: column-reverse;
-        justify-content: flex-end;
-    }
-    .wrapper .character{
-        margin-top: 2vh;
-        margin-left: 0;
-        width: 100%;
-    }
-    .wrapper .game{
-        top: 0;
-        margin-right: 0;
-        width: 100%;
-    }
-    #flip-btn{
-        margin-left: 0;
-        width: 100%;
-    }
+  .wrapper {
+    margin-top: 0;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+  }
+  .wrapper .character {
+    margin-top: 2vh;
+    margin-left: 0;
+    width: 100%;
+  }
+  .wrapper .game {
+    top: 0;
+    margin-right: 0;
+    width: 100%;
+  }
+  #flip-btn {
+    margin-left: 0;
+    width: 100%;
+  }
 }
+/*# sourceMappingURL=style.css.map */

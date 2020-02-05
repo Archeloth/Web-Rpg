@@ -345,13 +345,13 @@ function CheckCharacter(){
         const body = document.getElementsByTagName('body')[0];
         switch(player.charClass){
             case "fighter":
-                body.style.cursor = "url('assets/cursors/sword.cur'), pointer";
+                body.style.cursor = "url('assets/cursors/sword.cur'), auto";
                 break;
             case "rogue":
-                body.style.cursor = "url('assets/cursors/dagger.cur'), pointer";
+                body.style.cursor = "url('assets/cursors/dagger.cur'), auto";
                 break;
             case "mage":
-                body.style.cursor = "url('assets/cursors/wand.cur'), pointer";
+                body.style.cursor = "url('assets/cursors/wand.cur'), auto";
                 break;
         }
 
